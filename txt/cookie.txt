@@ -1,0 +1,12 @@
+if (server.hasHeader("Cookie")) {
+   Serial.print("Cookie Encontrada: ");
+   String cookie = server.header("Cookie");
+   Serial.println(cookie);
+   if (cookie.indexOf("AFTERLOG=1") != -1) {
+    Serial.println("Logueado de Antes");
+    server.sendHeader("Location", "/login");
+    server.sendHeader("Cache-Control", "no-cache");
+    server.sendHeader("Set-Cookie", "AFTERLOG=1");
+    server.send(301);
+   }
+}
