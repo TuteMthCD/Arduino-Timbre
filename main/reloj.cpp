@@ -3,8 +3,11 @@
 RTC_DS1307 RTC; // Crea el objeto RTC
 
 void init_rtc (void) {
+  Serial.print("\nInit RTC");
+ 
   Wire.begin(); // Establece la velocidad de datos del bus I2C
   RTC.begin(); // Establece la velocidad de datos del RTC
+  
 }
 void set_rtcFecha(int year, int month, int day, int hour, int minute, int second) {
   RTC.adjust(DateTime(year, month, day, hour, minute, second));
