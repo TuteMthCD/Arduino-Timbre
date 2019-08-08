@@ -16,70 +16,72 @@ void home(void);
 void response(void);
 
 void init_Server(void) {
-  Serial.print("\nInit WEB and WiFi");
+        Serial.print("\nInit WEB and WiFi");
 
-  //WiFi.mode(WIFI_AP);
-  //WiFi.softAP("ESP_AA", "12345");
+        //WiFi.mode(WIFI_AP);
+        //WiFi.softAP("ESP_AA", "12345");
 
-  WiFi.mode(WIFI_STA);                         //Wifi mode Station
-  WiFi.begin(ssid, password);
+        WiFi.mode(WIFI_STA);                   //Wifi mode Station
+        WiFi.begin(ssid, password);
 
 
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-}
-  init_SD();
-  init_Web();
+        while (WiFi.status() != WL_CONNECTED) {
+                delay(500);
+                Serial.print(".");
+        }
+        init_SD();
+        init_rtc();
 
-  init_rtc();
-
-  set_rtcFecha(2019, 7, 11, 15, 50, 0);
+        init_Web();
+        //set_rtcFecha(2019, 8, 8, 15, 22, 0);
 }
 
 void init_Web(void) {
 
-  Server.on("/", login);                //funtion with call to login in the index
-  Server.on("/data", data);
-  Server.on("/home", home);
-  Server.on("/response", response);
+        Server.on("/", login);          //funtion with call to login in the index
+        Server.on("/data", data);
+        Server.on("/home", home);
+        Server.on("/response", response);
 
-  Server.begin();                               //Start the server
-  Serial.print("\nServer listening in: ");
-  Serial.print(WiFi.localIP());
+        Server.begin();                         //Start the server
+        Serial.print("\nServer listening in: ");
+        Serial.print(WiFi.localIP());
 }
 
 void relog_Server(void) {
-  Server.handleClient();
+        Server.handleClient();
 }
 
 bool login(void) {
-  Server.send(200, "text/html", FileSD("index.html") );
+        Server.send(200, "text/html", FileSD("index.html") );
 }
 
 void data(void) {
-  if (Server.hasArg("USER") && Server.hasArg("PASS")) {
-    if (Server.arg("USER") == "admin" && Server.arg("PASS") == "admin") {
-      Serial.print("\n-- Username=" + Server.arg("USER") + " Password=" + Server.arg("PASS"));
+        if (Server.hasArg("USER") && Server.hasArg("PASS")) {
+                if (Server.arg("USER") == "admin" && Server.arg("PASS") == "admin") {
+                        Serial.print("\n-- Username=" + Server.arg("USER") + " Password=" + Server.arg("PASS"));
 
-      Server.sendHeader("Location", "/home");
-      Server.sendHeader("Cache-Control", "no-cache");
-      Server.sendHeader("Set-Cookie", "SESION=1");
-      Server.send(301);
-    } else {
-      Server.sendHeader("Location", "/");
-      Server.sendHeader("Cache-Control", "no-cache");
-      Server.sendHeader("Set-Cookie", "SESION=0");
-      Server.send(301);
-    }
-  }
+                        Server.sendHeader("Location", "/home");
+                        Server.sendHeader("Cache-Control", "no-cache");
+                        Server.sendHeader("Set-Cookie", "SESION=1");
+                        Server.send(301);
+                } else {
+                        Server.sendHeader("Location", "/");
+                        Server.sendHeader("Cache-Control", "no-cache");
+                        Server.sendHeader("Set-Cookie", "SESION=0");
+                        Server.send(301);
+                }
+        }
 }
 
 void home(void) {
-  Server.send(200, "text/html", FileSD("home.html"));
+        Server.send(200, "text/html", FileSD("home.html"));
 }
 
 void response(void) {
-  Server.send(200, "text/xml", FileSD("config.xml"));
+        XML XML;
+        XML.read("config.xml");
+        XML.writeParam("time", timeNowHours());
+        Server.send(200, "text/xml",XML.returnStr());
 }
