@@ -8,19 +8,27 @@
   <datalist>
     <box>
       <name>Timbre 1</name>
-      <time>15:30</time>
+      <time>15:25</time>
+      <outA>N</outA>
+      <outB>N</outB>
     </box>
     <box>
       <name>Timbre 2</name>
       <time>15:40</time>
+      <outA>N</outA>
+      <outB>N</outB>
     </box>
     <box>
       <name>Timbre 3</name>
       <time>15:40</time>
+      <outA>N</outA>
+      <outB>N</outB>
     </box>
     <box>
       <name>Timbre 4</name>
-      <time>15:40</time>
+      <time>15:50</time>
+      <outA>N</outA>
+      <outB>N</outB>
     </box>
   </datalist>
 </book>

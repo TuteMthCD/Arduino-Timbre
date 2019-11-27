@@ -5,124 +5,182 @@
   <meta charset="utf-8">
   <title>HOME</title>
   <!link rel="stylesheet" href="home.css">
-  <style media="screen">
-  body {
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-    background-color: #2c3e50;
-  }
+    <style media="screen">
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: sans-serif;
+        background-color: #2c3e50;
+      }
 
-  .navbar ul {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #191919;
-  }
+      .navbar ul {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #191919;
+      }
 
-  .navbar li {
-    float: left;
-  }
+      .navbar li {
+        float: left;
+      }
 
-  .navbar li a {
-    display: block;
-    color: #ecf0f1;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    //border: 0.5px solid #3498db;
-    transition: 0.1s;
-  }
+      .navbar li a {
+        display: block;
+        color: #ecf0f1;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        //border: 0.5px solid #3498db;
+        transition: 0.1s;
+      }
 
-  .navbar li a:hover {
-    background-color: #3498db;
-    transition: 0.1s;
-  }
+      .navbar li a:hover,
+      .navbar #save:hover {
+        background-color: #3498db;
+        transition: 0.1s;
+      }
 
-  .settings {
-    position: fixed;
-    display: inline-block;
-  }
+      #save {
+        width: 100%;
+        display: block;
+        color: #ecf0f1;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        transition: 0.1s;
+        background: transparent;
+        border: none;
+      }
 
-  .settings-list {
-    display: none;
-  }
+      .settings {
+        position: fixed;
+        display: inline-block;
+      }
 
-  .settings:hover .settings-list {
-    position: relative;
-    top: -1px;
-    display: block;
-  }
+      .settings-list {
+        display: none;
+      }
 
-  .box {
-    position: relative;
-    top: 50px;
-    float: left;
-    height: 180px;
-    width: 24%;
-    margin: 0.5%;
-    border-radius: 12px;
-    color: #ecf0f1;
-    background: #191919;
-    overflow: hidden;
-    z-index: -1;
-  }
+      .settings:hover .settings-list {
+        position: relative;
+        top: -1px;
+        display: block;
+      }
 
-  .box-time {
-    transform: translate(-50%, -50%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-size: 250%;
-    transition: 0.1;
-  }
+      .box {
+        position: relative;
+        top: 50px;
+        float: left;
+        height: 180px;
+        width: 24%;
+        margin: 0.5%;
+        border-radius: 12px;
+        color: #ecf0f1;
+        background: #191919;
+        overflow: hidden;
+        z-index: -1;
+      }
 
-  .box-title {
-    background-color: #2ecc71;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    height: 15%;
-    text-align: left;
-    display: none;
-    transition: 0.25;
-  }
+      .box-time {
+        border: 0px;
+        background: none;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        text-align: center;
+        color: #ecf0f1;
+        top: 50%;
+        left: 50%;
+        font-size: 250%;
+        transition: 0.1;
+      }
 
-  .box:hover .box-title {
-    display: block;
-    transition: 0.25;
-  }
+      .box-title {
+        background-color: #2ecc71;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 12%;
+        text-align: center;
+        display: none;
+        transition: 0.25;
+        border: 0px;
+      }
 
-  </style>
+      .box-out {
+        border: 0px;
+        background: none;
+        transform: translate(-50%, 200%);
+        position: absolute;
+        text-align: center;
+        color: #ecf0f1;
+        top: 50%;
+        left: 50%;
+        font-size: 80%;
+        transition: 0.1;
+        display: none;
+      }
+
+      .box:hover .box-title {
+        display: block;
+        transition: 0.25;
+      }
+
+      .check {
+        position: absolute;
+        top: 60%;
+        left: 40%;
+      }
+
+      .check-A,
+      .check-B {
+        display: none;
+        transition: 0.25s;
+      }
+
+      .box:hover .check-A,
+      .box:hover .check-B {
+        width: 40px;
+        height: 20px;
+        background: #2ecc71;
+        border-radius: 6px;
+        border: 2px solid #191919;
+        display: block;
+        transition: 0.25s;
+      }
+    </style>
 </head>
 
 <body>
   <div class="navbar">
     <ul>
       <li><a href="/home">Inicio</a></li>
-      <li><a href="/time">Hora</a></li>
       <li class="settings"><a>Configuración ∇</a>
         <ul class="settings-list">
-          <a href="/home">conf1</a>
-          <a href="/home">conf2</a>
-          <a href="/home">conf3</a>
+          <a href="/home">Horario</a>
+          <a href="/home">Seguridad</a>
+          <button onclick="save()" id="save">Guardar</button>
       </li>
     </ul>
-    <li style="float:right"><a href="#">Logout</a></li>
+    <li style="float:right"><a href="/">Logout</a></li>
     <li style="float:right"><a id="date">00:00</a></li>
     <li style="float:right"><a id="time">00:00</a></li>
     </ul>
   </div>
   <div id="boxes">
   </div>
+  <form action="/data" method="post" id="hidden" style="display:none">
+    <input type="text" name="datos" value="" id="datos">
+  </form>
 </body>
 
 <script>
-  function refresh() {
+  var boxesq = 0;
+
+  function init() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -130,7 +188,19 @@
         boxesFuntion(this);
       }
     };
-    xhttp.open("GET", "http://172.16.5.243/response", true);
+    xhttp.open("GET", "/response", true);
+    xhttp.send();
+  }
+
+  function refresh() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        timeFuntion(this);
+        //boxesFuntion(this);
+      }
+    };
+    xhttp.open("GET", "/response", true);
     xhttp.send();
   }
 
@@ -147,21 +217,69 @@
     var box = datalist[0].getElementsByTagName("box");
     var txt = "";
 
+    boxesq = box.length;
     for (var i = 0; i < box.length; i++) {
-      txt += "<div class='box'><div class='box-time'>";
-      txt += box[i].getElementsByTagName("time")[0].textContent;
-      txt += "</div><div class='box-title'>";
-      txt += box[i].getElementsByTagName("name")[0].textContent;
-      txt += "</div></div>";
+      txt += "<div class='box' id='box-" + i + "'>";
+      txt += "<input class='box-time' id='boxtime-" + i + "' value='"+box[i].getElementsByTagName("time")[0].textContent+"'></input>";
+      txt += "<input class='box-title' id='boxtitle-" + i + "' value='"+box[i].getElementsByTagName("name")[0].textContent+"'></input>";
+      txt += "<div class='check' id='check-" + i + "'>";
+      txt += "<div class='check-A' id='check-A-" + i + "'>";
+      txt += "<input class='out-A' id='out-A-" + i + "' type=checkbox>A</input>";
+      txt += "</div>";
+      txt += "<div class='check-B' id='check-B-" + i + "'>";
+      txt += "<input class='out-B' id='out-B-" + i + "' type=checkbox>B</input>";
+      txt += "</div></div></div>";
+
+
     }
-
-
     document.getElementById("boxes").innerHTML = txt;
+
+    for (var i = 0; i < box.length; i++) {
+      var outA = "out-A-" + i;
+      if (box[i].getElementsByTagName("outA")[0].textContent == "Y") document.getElementById(outA).checked = true;
+
+      var outB = "out-B-" + i;
+      if (box[i].getElementsByTagName("outB")[0].textContent == "Y") document.getElementById(outB).checked = true;
+    }
   }
 
+  function post(txt) {
+    const form = document.getElementById("hidden");
+    const input = document.getElementById("datos");
+    input.value = txt;
 
-  refresh();
+    form.submit();
+  }
+
+  function save() {
+    var txt = "<book><time-um><date></date><day></day><time></time></time-um><datalist>";
+    for (var i = 0; i < boxesq; i++) {
+      var boxtitle = "boxtitle-" + i;
+      var boxtime = "boxtime-" + i;
+      var outA = "out-A-" + i;
+      var outB = "out-B-" + i;
+
+      txt += "<box>";
+      txt += "<name>" + document.getElementById(boxtitle).value + "</name>";
+      txt += "<time>" + document.getElementById(boxtime).value + "</time>";
+      txt += "<outA>";
+      if (document.getElementById(outA).checked == true) {
+        txt += "Y";
+      } else txt += "N";
+      txt += "</outA>";
+      txt += "<outB>";
+      if (document.getElementById(outB).checked == true) {
+        txt += "Y";
+      } else txt += "N";
+      txt += "</outB></box>";
+    }
+    txt += "</datalist></book>";
+    post(txt);
+  }
+
+  init();
   setInterval(refresh, 1000);
 </script>
+</div>
 
 </html>
