@@ -10,7 +10,8 @@ typedef struct {
   char outB=0;
 }structDatos;
 
-static structDatos Timbres[10];
+#define CantBox 10
+static structDatos Timbres[CantBox];
 
 class XML {
 private:

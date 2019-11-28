@@ -21,8 +21,10 @@ void response(void);
 
 void init_pins(void);
 void relojclip(void); // funcion de comparacion de los relojes
+void obtenerDatos(void);
 
 void init_Server(void) {
+        init_pins();
         Serial.print("\nInit WEB and WiFi");
 
         //WiFi.mode(WIFI_AP);
@@ -39,12 +41,12 @@ void init_Server(void) {
         }
         init_SD();
         init_rtc();
-        init_pins();
 //        init_led();
 
 //        color_led(1,0,0);
         init_Web();
         //set_rtcFecha(2019, 8, 8, 15, 22, 0);
+        obtenerDatos();
 }
 
 void init_Web(void) {
@@ -90,10 +92,7 @@ void data(void) {
 
                 writeSD("config.xml",aux);
 
-                XML XML;
-                XML.read("config.xml");
-
-                XML.needDatas();
+                obtenerDatos();
 
                 Server.sendHeader("Location", "/home");
                 Server.sendHeader("Cache-Control", "no-cache");
@@ -113,18 +112,16 @@ void response(void) {
         Server.send(200, "text/xml",XML.returnStr());
 }
 
-#define CantBox 10
-
-#define pinOutA 10
-#define pinOutB 11
+#define pinOutA 0
+#define pinOutB 16
 
 void init_pins(void){
         pinMode(pinOutA,OUTPUT);
-        //pinMode(pinOutB,OUTPUT);
+        pinMode(pinOutB,OUTPUT);
 
 
         digitalWrite(pinOutA,LOW);
-        //digitalWrite(pinOutB,LOW);
+        digitalWrite(pinOutB,HIGH);
 
         Serial.print("\ninit pins configurados");
 }
@@ -135,7 +132,9 @@ void relojclip(void){
 
         if(millis()>before) {
                 String time = timeNowHours();
+                //time= time.substring(0,5);
                 for(char i=0; i<CantBox; i++) {
+                        Serial.print(Timbres[i].time);
                         if(Timbres[i].time == time) {
                                 if(Timbres[i].outA) outVarA=1;
                                 if(Timbres[i].outB) outVarB=1;
@@ -148,12 +147,39 @@ void relojclip(void){
         if (outVarA) {
                 if(millis()>soundtime) {
                         digitalWrite(pinOutA,LOW);
-                }else digitalWrite(pinOutA,HIGH);
+                }else{
+                        digitalWrite(pinOutA,HIGH);
+                }
         }
         if (outVarB) {
                 if(millis()>soundtime) {
                         digitalWrite(pinOutB,LOW);
-                }else digitalWrite(pinOutB,HIGH);
+                }else {
+                        digitalWrite(pinOutB,HIGH);
+                }
         }
 
+        if (Serial.available() > 0) {
+                // read the incoming byte:
+                char incomingByte = Serial.read();
+                if (incomingByte == 'A') {
+                        outVarA=1;
+                        soundtime=millis()+500;
+                }
+                if (incomingByte == 'B') {
+                        outVarB=1;
+                        soundtime=millis()+500;
+
+                }
+        }
+        Serial.print(Timbres[1].time);
+}
+
+
+void obtenerDatos(void){
+        XML XML;
+        XML.read("config.xml");
+        XML.needDatas();
+
+        Serial.print("\nInit obteniendo Datos");
 }

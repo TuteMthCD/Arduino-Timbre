@@ -4,7 +4,7 @@
 
 #define Pin_CS 15
 
-#define CantBox 10
+
 
 void init_SD(void) {
         Serial.print("\ninit SD");
@@ -85,7 +85,6 @@ String XML::needParam(String parametro, String str){
 String XML::returnStr(void){
         return (inStr);
 }
-
 void XML::needDatas(void){
         String datalist = needParam("datalist",inStr);
         String box[CantBox];
@@ -109,7 +108,7 @@ void XML::needDatas(void){
                 }else Timbres[i].outB=0;
 
 
-                //Serial.println(Timbres[i].time);
+                Serial.println(Timbres[i].time);
                 //Serial.println(Timbres[i].outA);
                 //Serial.println(Timbres[i].outB);
 
