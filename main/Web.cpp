@@ -12,6 +12,8 @@ ESP8266WebServer Server(80);                              //Webserver Object
 //#define ssid      "EEST1VL"
 //#define password  "exo-2011"
 
+#define soundTime 500
+
 void init_Web(void);
 bool login(void);
 void data(void);
@@ -22,6 +24,10 @@ void response(void);
 void init_pins(void);
 void relojclip(void); // funcion de comparacion de los relojes
 void obtenerDatos(void);
+
+structDatos Timbres[CantBox];
+char outVarA=0,outVarB=0;
+unsigned long soundtime=0;
 
 void init_Server(void) {
         init_pins();
@@ -98,6 +104,26 @@ void data(void) {
                 Server.sendHeader("Cache-Control", "no-cache");
                 Server.send(301);
         }
+        if(Server.hasArg("SonA")) {
+                soundtime=millis()+soundTime;
+                outVarA=1;
+                //Serial.print("Sono A");
+
+                Server.sendHeader("Location", "/home");
+                Server.sendHeader("Cache-Control", "no-cache");
+                Server.sendHeader("Set-Cookie", "SESION=0");
+                Server.send(301);
+        }
+        if(Server.hasArg("SonB")) {
+                soundtime=millis()+soundTime;
+                outVarB=1;
+                //Serial.print("Sono B");
+
+                Server.sendHeader("Location", "/home");
+                Server.sendHeader("Cache-Control", "no-cache");
+                Server.sendHeader("Set-Cookie", "SESION=0");
+                Server.send(301);
+        }
 }
 
 void home(void) {
@@ -108,7 +134,7 @@ void response(void) {
         XML XML;
         XML.read("config.xml");
         XML.writeParam("time", timeNowHours());
-
+        XML.writeParam("date", timeNowDate());
         Server.send(200, "text/xml",XML.returnStr());
 }
 
@@ -123,23 +149,25 @@ void init_pins(void){
         digitalWrite(pinOutA,LOW);
         digitalWrite(pinOutB,HIGH);
 
-        Serial.print("\ninit pins configurados");
+        Serial.print("\ninit configured pins");
 }
 void relojclip(void){
         static char aux = 0;
-        static unsigned long before= 0, soundtime=millis()+500;
-        static char outVarA=0,outVarB=0;
+        static unsigned long before= 0;
 
         if(millis()>before) {
                 String time = timeNowHours();
-                //time= time.substring(0,5);
+                //time= time.substring(0,4);
                 for(char i=0; i<CantBox; i++) {
-                        Serial.print(Timbres[i].time);
+                        //Serial.print(Timbres[i].time);
                         if(Timbres[i].time == time) {
                                 if(Timbres[i].outA) outVarA=1;
                                 if(Timbres[i].outB) outVarB=1;
-                                soundtime=millis()+500;
+                                soundtime=millis()+soundTime;
+                                Serial.print("Sono ?");
                         }
+                        //Serial.println(Timbres[i].time);
+                        //Serial.println(time);
                 }
                 before=millis()+1000;
         }
@@ -164,22 +192,20 @@ void relojclip(void){
                 char incomingByte = Serial.read();
                 if (incomingByte == 'A') {
                         outVarA=1;
-                        soundtime=millis()+500;
+                        soundtime=millis()+soundTime;
                 }
                 if (incomingByte == 'B') {
                         outVarB=1;
-                        soundtime=millis()+500;
-
+                        soundtime=millis()+soundTime;
+                        for(char i=0; i<CantBox; i++) Serial.println(Timbres[i].time);
                 }
         }
-        Serial.print(Timbres[1].time);
 }
 
 
 void obtenerDatos(void){
         XML XML;
         XML.read("config.xml");
-        XML.needDatas();
-
-        Serial.print("\nInit obteniendo Datos");
+        XML.needDatas(&Timbres[0]);
+        //Serial.print("\nGetting data");
 }

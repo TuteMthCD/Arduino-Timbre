@@ -11,7 +11,6 @@ typedef struct {
 }structDatos;
 
 #define CantBox 10
-static structDatos Timbres[CantBox];
 
 class XML {
 private:
@@ -22,6 +21,6 @@ public:
   String readParam(String);
   void writeParam(String, String);
   String returnStr(void);
-  void needDatas(void);
+  void needDatas(structDatos *);
   String needParam(String, String);
 };

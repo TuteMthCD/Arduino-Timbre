@@ -32,12 +32,12 @@ String FileSD(const char* name) {
 
 }
 void writeSD(String name,String text){
+        SD.remove(name);
         File archivo;
-
-        //SD.remove("config.xml");
+        archivo = SD.open(name, FILE_WRITE);
+        archivo.close();
 
         archivo = SD.open(name, FILE_WRITE);
-
         if (archivo) {
                 archivo.seek(0);
                 for(unsigned int i=0; i<text.length(); i++) archivo.print(" ");
@@ -85,7 +85,7 @@ String XML::needParam(String parametro, String str){
 String XML::returnStr(void){
         return (inStr);
 }
-void XML::needDatas(void){
+void XML::needDatas(structDatos *Timbrespun){
         String datalist = needParam("datalist",inStr);
         String box[CantBox];
 
@@ -97,18 +97,18 @@ void XML::needDatas(void){
 
 
         for(char i=0; i<CantBox; i++) {
-                Timbres[i].time= needParam("time", box[i]);
+                (*(Timbrespun+i)).time= needParam("time", box[i]) + ":00";
 
                 if(needParam("outA",box[i])=="Y") {
-                        Timbres[i].outA=1;
-                }else Timbres[i].outA=0;
+                        (*(Timbrespun+i)).outA=1;
+                }else (*(Timbrespun+i)).outA=0;
 
                 if(needParam("outB",box[i])=="Y") {
-                        Timbres[i].outB=1;
-                }else Timbres[i].outB=0;
+                        (*(Timbrespun+i)).outB=1;
+                }else (*(Timbrespun+i)).outB=0;
 
 
-                Serial.println(Timbres[i].time);
+                //Serial.println(  (*(Timbrespun+i)).time);
                 //Serial.println(Timbres[i].outA);
                 //Serial.println(Timbres[i].outB);
 

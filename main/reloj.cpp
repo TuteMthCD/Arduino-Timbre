@@ -10,11 +10,23 @@ String timeNowHours(void) {
         DateTime now = RTC.now(); // Obtiene la fecha y hora del RTC
 
         String aux = "";
-        aux = now.hour();
-        aux += ":";
-        aux += now.minute();
-        aux += ":";
-        aux += now.second();
+        if(now.hour() < 10) {
+                aux += "0";
+                aux+=now.hour();
+        }else aux+=now.hour();
+        aux +=":";
+
+        if(now.minute() < 10) {
+                aux += "0";
+                aux+=now.minute();
+        }else aux+=now.minute();
+        aux +=":";
+
+        if(now.second() < 10) {
+                aux += "0";
+                aux+=now.second();
+        }else aux+=now.second();
+
         return (aux);
 }
 
@@ -31,11 +43,11 @@ String timeNowDate(void) {
 
 }
 void init_rtc (void) {
-  Wire.begin(); // Establece la velocidad de datos del bus I2C
-  RTC.begin(); // Establece la velocidad de datos del RTC
+        Wire.begin(); // Establece la velocidad de datos del bus I2C
+        RTC.begin(); // Establece la velocidad de datos del RTC
 
-  //RTC.adjust(DateTime(__DATE__, __TIME__));
+        //RTC.adjust(DateTime(__DATE__, __TIME__));
 
-  Serial.print("\nInit RTC");
-  Serial.print(" "+timeNowDate()+" "+timeNowHours());
+        Serial.print("\nInit RTC");
+        Serial.print(" "+timeNowDate()+" "+timeNowHours());
 }

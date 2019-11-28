@@ -39,17 +39,21 @@
       }
 
       .navbar li a:hover,
-      .navbar #save:hover {
+      .navbar #save:hover,
+      #B:hover,
+      #A:hover {
         background-color: #3498db;
         transition: 0.1s;
       }
 
-      #save {
+      #save,
+      #B,
+      #A {
         width: 100%;
         display: block;
         color: #ecf0f1;
         text-align: center;
-        padding: 14px 16px;
+        padding: 15.5px 10px;
         text-decoration: none;
         transition: 0.1s;
         background: transparent;
@@ -168,12 +172,14 @@
     <li style="float:right"><a href="/">Logout</a></li>
     <li style="float:right"><a id="date">00:00</a></li>
     <li style="float:right"><a id="time">00:00</a></li>
-    </ul>
+    <li style="float:right"><button onclick="post('null', 'SonA');" id="B">B</button>
+    <li style="float:right"><button onclick="post('null', 'SonB')" id="B">A</button>
+      </ul>
   </div>
   <div id="boxes">
   </div>
   <form action="/data" method="post" id="hidden" style="display:none">
-    <input type="text" name="datos" value="" id="datos">
+    <input type="text" name="" value="" id="datos">
   </form>
 </body>
 
@@ -220,8 +226,8 @@
     boxesq = box.length;
     for (var i = 0; i < box.length; i++) {
       txt += "<div class='box' id='box-" + i + "'>";
-      txt += "<input class='box-time' id='boxtime-" + i + "' value='"+box[i].getElementsByTagName("time")[0].textContent+"'></input>";
-      txt += "<input class='box-title' id='boxtitle-" + i + "' value='"+box[i].getElementsByTagName("name")[0].textContent+"'></input>";
+      txt += "<input class='box-time' id='boxtime-" + i + "' value='" + box[i].getElementsByTagName("time")[0].textContent + "'></input>";
+      txt += "<input class='box-title' id='boxtitle-" + i + "' value='" + box[i].getElementsByTagName("name")[0].textContent + "'></input>";
       txt += "<div class='check' id='check-" + i + "'>";
       txt += "<div class='check-A' id='check-A-" + i + "'>";
       txt += "<input class='out-A' id='out-A-" + i + "' type=checkbox>A</input>";
@@ -243,9 +249,10 @@
     }
   }
 
-  function post(txt) {
+  function post(txt, name) {
     const form = document.getElementById("hidden");
     const input = document.getElementById("datos");
+    input.name = name;
     input.value = txt;
 
     form.submit();
@@ -274,9 +281,8 @@
       txt += "</outB></box>";
     }
     txt += "</datalist></book>";
-    post(txt);
+    post(txt, "datos");
   }
-
   init();
   setInterval(refresh, 1000);
 </script>
